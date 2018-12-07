@@ -25,7 +25,9 @@ DEPENDENCIES:
 std::string
 std::map
 sf::Texture
-
+std::vector
+std::filesystem
+std::stringstream
 */
 
 #pragma once
