@@ -25,6 +25,7 @@ DEPENDENCIES:
 std::string
 std::map
 sf::Texture
+sf::SoundBuffer
 std::vector
 std::filesystem
 std::stringstream
@@ -32,6 +33,7 @@ std::stringstream
 
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <map>
 #include <string>
 #include <iostream>
@@ -52,13 +54,15 @@ This class has been created with the idea of increasing performance in a large
 scale game application that references a large amount of textures. With the
 implementation of this class, it will be easier to store references to all
 textures used, such that no texture is loaded twice, wasting precious memory.
+As of now, this class has been redisgned to hold sound files as well, with the
+same intention of increasing performance as before
 
 The basic structure of the class will be a map that holds the loaded references
 and a method that will allow for the user to both access and create entries
 fluidly.
 */
 
-class TextureMan {
+class ResourceManager {
 
 private:
   /*
@@ -71,26 +75,59 @@ private:
 
   It is defined as static such that no instance of the class needs to be created
   */
-  static map<string, Texture*> m_map;
+  static map<string, Texture*> m_textureMap;
+
+  /*
+  We also need an equivalent map for our sound buffers
+  */
+  static map<string, SoundBuffer*> m_soundMap;
+
+  /*
+  We also want to be able to provide an invalid texture if the actual file doesn't
+  exist. The default location for this file will be in the same directory as the actual
+  cpp files, but will be able to be set through a method below
+  */
+  static string m_defaultInvalidPath;
+
+  /*
+  Sounds will not have a default invalid file, just nothing will be played
+  */
 
 public:
+/******* TEXTURE STUFF ********/
   /*
-  The most important method is the getTexture(string path) because it will both
+  The most important method for the texture part of the manager
+  is the getTexture(string path) because it will both
   create and access entries in our map. As for the former, if it does not already
   find an entry under the path, it will create one and return the reference.
   */
-
   static Texture* getTexture(const string filePath);
 
   /*
   For basic debugging, we also want to be able to know how many textures
   are held in the map
   */
-  static int getSize();
+  static int getNumberOfTextures();
   /*
   Just to save some memory while the game is running, we will also create a
   function that loads all files in a given directory, with the option of doing
   the same recursively.
   */
   static void preLoadTextures(const string folderPath, bool recurse = true);
+
+  /*
+  We want to be able to change our invalid tile path to place with the rest of our
+  textures in a larger project
+  */
+  static void setInvalidTexturePath(const string filePath);
+
+/******* SOUND STUFF ********/
+  /*
+  Most of the methods here mirror the ones above, so I won't go into too much detail here
+  */
+  static SoundBuffer* getSoundBuffer(const string filePath);
+
+  static int getNumberOfSoundBuffers();
+
+  static void preLoadSoundBuffers(const string folderPath, bool recurse = true);
 };
