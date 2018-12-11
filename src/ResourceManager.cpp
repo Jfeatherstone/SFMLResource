@@ -28,7 +28,12 @@ Texture* ResourceManager::getTexture(const string filePath) {
   // We use the new keyword because we want to store these variables ourside of
   // the stack
   Texture* texture = new Texture();
-  texture->loadFromFile(filePath);
+  
+  // If the texture doesn't load properly, we assign our invalid texture to it
+  if (!texture->loadFromFile(filePath)) {
+    texture->loadFromFile(m_defaultInvalidPath);
+  }
+
   ResourceManager::m_textureMap[filePath] = texture;
 
   return ResourceManager::m_textureMap[filePath];
@@ -49,6 +54,7 @@ void ResourceManager::preLoadTextures(const string folderPath, bool recurse) {
       if (contains(TEXTURE_EXTENSIONS, ss.str().substr(ss.str().length() - 4, 3))) {
         Texture* texture = new Texture();
         // The substring nonsense in this next parameter is to remove extraneous quotes from ss
+        // Since this returns a boolean as to whether or not it completed, we can use our invalid tile
         texture->loadFromFile(ss.str().substr(1, ss.str().length() - 2));
         m_textureMap[ss.str().substr(1, ss.str().length() - 2)] = texture;
         //out << getSize() << endl;
