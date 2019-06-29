@@ -76,22 +76,31 @@ private:
   */
   static std::map<std::string, sf::SoundBuffer*> m_soundMap;
 
+  static std::map<std::string, sf::Font*> m_fontMap;
+
   /*
-  We also want to be able to provide an invalid texture if the actual file doesn't
+  We also want to be able to provide an invalid texture/sound/font if the actual file doesn't
   exist. The default location for this file will be in the same directory as the actual
   cpp files, but will be able to be set through a method below
   */
-  static std::string m_defaultInvalidPath;
+  const static std::string DEFAULT_INVALID_TEXTURE;
+  const static std::string DEFAULT_INVALID_SOUND;
+  const static std::string DEFAULT_INVALID_FONT;
 
-  /*
-  Sounds will not have a default invalid file, just nothing will be played
-  */
+  static std::string m_invalidTexture;
+  static std::string m_invalidSound;
+  static std::string m_invalidFont;
+
+  const static std::vector<std::string> TEXTURE_EXTENSIONS;
+  const static std::vector<std::string> SOUND_EXTENSIONS;
+  const static std::vector<std::string> FONT_EXTENSIONS;
+
 
 public:
 /******* TEXTURE STUFF ********/
   /*
   The most important method for the texture part of the manager
-  is the getTexture(string path) because it will both
+  is the getTexture(path) because it will both
   create and access entries in our map. As for the former, if it does not already
   find an entry under the path, it will create one and return the reference.
   */
@@ -125,6 +134,20 @@ public:
 
   static void preLoadSoundBuffers(const std::string folderPath, bool recurse = true);
 
+  static void setInvalidSoundPath(const std::string filePath);
+
+
+/******* SOUND STUFF ********/
+  /*
+  Most of the methods here mirror the ones above, so I won't go into too much detail here
+  */
+  static sf::Font* getFont(const std::string filePath);
+
+  static int getNumberOfFonts();
+
+  static void preLoadFonts(const std::string folderPath, bool recurse = true);
+
+  static void setInvalidFontPath(const std::string filePath);
 
 /******* CLEARING ********/
   /*
@@ -135,4 +158,11 @@ public:
 
   static void clearSoundBuffers();
   
+  static void clearFonts();
+
+  /************************
+   *        MISC
+   ************************/
+  static bool contains(std::vector<std::string> vec, std::string str);
+
 };
