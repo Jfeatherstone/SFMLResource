@@ -146,3 +146,25 @@ bool contains(std::vector<std::string> vec, std::string str) {
   }
   return false;
 }
+
+void ResourceManager::clearSoundBuffers() {
+
+  // First we delete all of the pointers
+  for (auto element: m_soundMap) {
+    delete element.second;
+  }
+
+  // And now clear all of the entries
+  m_soundMap.clear();
+}
+
+void ResourceManager::clearTextures() {
+
+  // First we delete all of the pointers
+  for (auto element: m_textureMap) {
+    delete element.second;
+  }
+
+  // And now clear all of the entries
+  m_textureMap.clear();
+}

@@ -124,4 +124,15 @@ public:
   static int getNumberOfSoundBuffers();
 
   static void preLoadSoundBuffers(const std::string folderPath, bool recurse = true);
+
+
+/******* CLEARING ********/
+  /*
+  These two methods will clear the stored textures
+  */
+
+  static void clearTextures();
+
+  static void clearSoundBuffers();
+  
 };
