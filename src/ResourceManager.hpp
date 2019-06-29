@@ -34,15 +34,9 @@ std::stringstream
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <map>
-#include <string>
+
 #include <iostream>
 #include <filesystem>
-#include <sstream>
-
-using namespace std;
-using namespace sf;
-namespace fs = std::filesystem;
 
 /*
 
@@ -75,19 +69,19 @@ private:
 
   It is defined as static such that no instance of the class needs to be created
   */
-  static map<string, Texture*> m_textureMap;
+  static std::map<std::string, sf::Texture*> m_textureMap;
 
   /*
   We also need an equivalent map for our sound buffers
   */
-  static map<string, SoundBuffer*> m_soundMap;
+  static std::map<std::string, sf::SoundBuffer*> m_soundMap;
 
   /*
   We also want to be able to provide an invalid texture if the actual file doesn't
   exist. The default location for this file will be in the same directory as the actual
   cpp files, but will be able to be set through a method below
   */
-  static string m_defaultInvalidPath;
+  static std::string m_defaultInvalidPath;
 
   /*
   Sounds will not have a default invalid file, just nothing will be played
@@ -101,7 +95,7 @@ public:
   create and access entries in our map. As for the former, if it does not already
   find an entry under the path, it will create one and return the reference.
   */
-  static Texture* getTexture(const string filePath);
+  static sf::Texture* getTexture(const std::string filePath);
 
   /*
   For basic debugging, we also want to be able to know how many textures
@@ -113,21 +107,21 @@ public:
   function that loads all files in a given directory, with the option of doing
   the same recursively.
   */
-  static void preLoadTextures(const string folderPath, bool recurse = true);
+  static void preLoadTextures(const std::string folderPath, bool recurse = true);
 
   /*
   We want to be able to change our invalid tile path to place with the rest of our
   textures in a larger project
   */
-  static void setInvalidTexturePath(const string filePath);
+  static void setInvalidTexturePath(const std::string filePath);
 
 /******* SOUND STUFF ********/
   /*
   Most of the methods here mirror the ones above, so I won't go into too much detail here
   */
-  static SoundBuffer* getSoundBuffer(const string filePath);
+  static sf::SoundBuffer* getSoundBuffer(const std::string filePath);
 
   static int getNumberOfSoundBuffers();
 
-  static void preLoadSoundBuffers(const string folderPath, bool recurse = true);
+  static void preLoadSoundBuffers(const std::string folderPath, bool recurse = true);
 };
