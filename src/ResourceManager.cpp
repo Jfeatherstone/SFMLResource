@@ -10,10 +10,9 @@
 Since we are going to make sure the file we are reading in are pictures,
 we want an array of the possible file extensions
 */
-const std::vector<std::string> ResourceManager::TEXTURE_EXTENSIONS = {"png", "jpg"};
+const std::vector<std::string> ResourceManager::TEXTURE_EXTENSIONS = {"png", "jpg", "jpeg"};
 const std::vector<std::string> ResourceManager::SOUND_EXTENSIONS = {"wav"};
 const std::vector<std::string> ResourceManager::FONT_EXTENSIONS = {".ttf"};
-
 
 // Here we initialize all of the maps as empty
 std::map<std::string, sf::Texture*> ResourceManager::m_textureMap;
@@ -24,6 +23,7 @@ std::map<std::string, sf::Font*> ResourceManager::m_fontMap;
 const std::string ResourceManager::DEFAULT_INVALID_TEXTURE = "invalid.png";
 const std::string ResourceManager::DEFAULT_INVALID_SOUND = "invalid.wav";
 const std::string ResourceManager::DEFAULT_INVALID_FONT = "invalid.ttf";
+
 
 /***************************
  *    TEXTURE METHODS 
@@ -54,6 +54,10 @@ sf::Texture* ResourceManager::getTexture(const std::string filePath) {
   m_textureMap[filePath] = texture;
 
   return m_textureMap[filePath];
+}
+
+int ResourceManager::getNumberOfTextures() {
+  return m_textureMap.size();
 }
 
 void ResourceManager::preLoadTextures(const std::string folderPath, bool recurse) {
@@ -93,10 +97,6 @@ void ResourceManager::preLoadTextures(const std::string folderPath, bool recurse
   }
 }
 
-int ResourceManager::getNumberOfTextures() {
-  return m_textureMap.size();
-}
-
 void ResourceManager::clearTextures() {
 
   // First we delete all of the pointers
@@ -107,6 +107,11 @@ void ResourceManager::clearTextures() {
   // And now clear all of the entries
   m_textureMap.clear();
 }
+
+std::string ResourceManager::getInvalidTexturePath() {
+  return m_invalidTexture;
+}
+
 
 /***************************
  *    SOUND METHODS 
@@ -131,6 +136,10 @@ sf::SoundBuffer* ResourceManager::getSoundBuffer(const std::string filePath) {
   m_soundMap[filePath] = sound;
 
   return m_soundMap[filePath];
+}
+
+int ResourceManager::getNumberOfSoundBuffers() {
+  return m_soundMap.size();
 }
 
 void ResourceManager::preLoadSoundBuffers(const std::string folderPath, bool recurse) {
@@ -167,10 +176,6 @@ void ResourceManager::preLoadSoundBuffers(const std::string folderPath, bool rec
   }
 }
 
-int ResourceManager::getNumberOfSoundBuffers() {
-  return m_soundMap.size();
-}
-
 void ResourceManager::clearSoundBuffers() {
 
   // First we delete all of the pointers
@@ -182,9 +187,14 @@ void ResourceManager::clearSoundBuffers() {
   m_soundMap.clear();
 }
 
-/*******************************
- *        FONT METHODS
- ******************************/
+std::string ResourceManager::getInvalidSoundPath() {
+  return m_invalidSound;
+}
+
+
+/***************************
+ *    FONT METHODS 
+ **************************/
 
 sf::Font* ResourceManager::getFont(const std::string filePath) {
 
@@ -207,6 +217,10 @@ sf::Font* ResourceManager::getFont(const std::string filePath) {
 
   return m_fontMap[filePath];
 
+}
+
+int ResourceManager::getNumberOfFonts() {
+  return m_fontMap.size();
 }
 
 void ResourceManager::preLoadFonts(const std::string folderPath, bool recurse) {
@@ -243,8 +257,8 @@ void ResourceManager::preLoadFonts(const std::string folderPath, bool recurse) {
   }
 }
 
-int ResourceManager::getNumberOfFonts() {
-  return m_fontMap.size();
+std::string ResourceManager::getInvalidFontPath() {
+  return m_invalidFont;
 }
 
 void ResourceManager::clearFonts() {
@@ -257,6 +271,7 @@ void ResourceManager::clearFonts() {
   // And now clear all of the entries
   m_fontMap.clear();
 }
+
 
 /******************************
  *           MISC
